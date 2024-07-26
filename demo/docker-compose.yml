@@ -1,0 +1,39 @@
+version: 0.0.1
+
+networks:
+  my_net:
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mymysql
+    ports:
+      - 3333:3306
+    networks:
+      - my_net
+    volumes:
+      - data:/var/lib/mysql/
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=adams
+      - MYSQL_DATABASE=just_dab_db
+
+  backend:
+    depends_on:
+      - mysql
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: monbackend
+    ports:
+      - 8081:8080
+    networks:
+      - my_net
+    environment:
+      - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
+      - DATABASE_URL=jdbc:mysql://mymysql:3306/just_dab_db
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=adams
+
+volumes:
+  data:
