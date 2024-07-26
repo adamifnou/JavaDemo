@@ -33,6 +33,7 @@ jobs:
 
       - name: Execute Gradle Tests
         run: |
+           cd demo
            ./gradlew test
 
       - name: Store Tests Reports
@@ -46,8 +47,8 @@ jobs:
 
       - name: Execute Gradle build
         run: |
-          /gradlew build
-
+           cd demo
+           ./gradlew build
       - name: Store Production Artifact
         uses: actions/upload-artifact@v4
         with:
